@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Just Edit it</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <nav class="bg-gray-800 p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <a class="text-white text-lg font-bold" href="/">Just Edit it</a>
+            <div class="space-x-4">
+                <a class="text-gray-300 hover:text-white" href="/">Home</a>
+                <a class="text-gray-300 hover:text-white" href="/about">About</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto my-8 p-12">
+        <h1 class="text-2xl font-bold mb-4">Just Edit it</h1>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="bg-{{ 'green' if category == 'success' else 'red' }}-100 border-l-4 border-{{ 'green' if category == 'success' else 'red' }}-500 text-{{ 'green' if category == 'success' else 'red' }}-700 p-4 mb-4" role="alert">
+            <p class="font-bold">{{ category.capitalize() }}!</p>
+            <p>{{ message|safe }}</p>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        <form action="/edit" method="post" enctype="multipart/form-data" class="space-y-4">
+            <div>
+                <label for="formFile" class="block text-sm font-medium text-gray-700 mb-2">Select an Image to edit</label>
+                <input class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" type="file" name="file" id="formFile" required>
+            </div>
+            <div>
+                <label for="operation" class="block text-sm font-medium text-gray-700 mb-2">Select an Editing Operation</label>
+                <select name="operation" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" id="operation" required>
+                    <option selected disabled>Choose an Operation</option>
+                    <option value="cgray">Convert to Grayscale</option>
+                    <option value="invert">Invert Colors</option>
+                    <option value="blur">Apply Blur</option>
+                    <option value="sepia">Apply Sepia</option>
+                    <option value="resize">Resize Image(800 * 600)</option>
+                    <option value="edges">Edge Detection</option>
+                    <option value="threshold">Apply Threshold</option>
+                </select>
+            </div>
+            <div class="flex justify-center">
+                <button type="submit" class="py-2 px-4 bg-blue-600 text-white font-semibold rounded-md shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Submit</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
